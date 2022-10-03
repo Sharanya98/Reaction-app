@@ -1,47 +1,62 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+<script>
+  import Block from './components/Block.vue';
+  import Result from './components/Result.vue';
+
+  export default{
+    name : 'App',
+    components:{ Block ,Result},
+    data() {
+      return{
+        header : "Welcome to Timer Game",
+        isplayer : false,
+        delay : null,
+        score : null,
+        showResult : false
+      }     
+    },
+    methods:{
+      start(){
+        this.isplayer=true
+        this.delay = 2000 + Math.random()*2000
+        this.showResult = false
+        // console.log(this.delay)
+      },
+      endGame(timeRequired){
+        this.score = timeRequired
+        this.isplayer = false
+        this.showResult = true
+      }
+    }
+  }
+
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
+  <div class="main">
+    <h1>{{ header}}</h1>
+   <button @click="start" :disabled='isplayer'>play</button>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
+   <Block v-if='isplayer' :delay = "delay" @end="endGame"/>
+   <Result v-if="showResult" :score = "score"/>
+   <!-- <p v-if="showResult">{{ score }} ms</p> -->
 
-  <main>
-    <TheWelcome />
-  </main>
+  </div>
+  
+  
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
+<style>
+  .main{
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #444;
+    margin-top: 60px;;
   }
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
 
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
+
+
+
 </style>
